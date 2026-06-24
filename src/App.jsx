@@ -117,13 +117,21 @@ export default function App() {
   const [active, setActive] = useState("نظرة عامة");
   const [selected, setSelected] = useState("فريق السعادة");
 
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("committee-dark-mode") === "true";
-  });
+  const THEME_KEY = "committee-dark-mode-v2";
 
-  useEffect(() => {
-    localStorage.setItem("committee-dark-mode", darkMode ? "true" : "false");
-  }, [darkMode]);
+const [darkMode, setDarkMode] = useState(() => {
+  const savedTheme = localStorage.getItem(THEME_KEY);
+
+  if (savedTheme === null) {
+    return true;
+  }
+
+  return savedTheme === "true";
+});
+
+useEffect(() => {
+  localStorage.setItem(THEME_KEY, darkMode ? "true" : "false");
+}, [darkMode]);
 
   const data = useMemo(() => {
     return committees.map((committee) => {
